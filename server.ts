@@ -37,6 +37,12 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+// Direct bundle archive download for Termux / offline setup
+app.get(["/api/bundle.tar.gz", "/wave-agent-bundle.tar.gz"], (req, res) => {
+  const bundlePath = path.join(process.cwd(), "public", "wave-agent-bundle.tar.gz");
+  res.download(bundlePath, "wave-agent-bundle.tar.gz");
+});
+
 // Analyze notification via Gemini or intelligent fallback
 app.post("/api/agent/analyze-notification", async (req, res) => {
   try {

@@ -1,0 +1,6 @@
+{
+  "name": "Wave Agent",
+  "description": "Android notification intelligence service and cross-app agent assistant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

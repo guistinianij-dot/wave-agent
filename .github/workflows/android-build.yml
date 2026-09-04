@@ -1,0 +1,39 @@
+name: Android Native APK Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build Type (debug or release)'
+        required: true
+        default: 'debug'
+
+jobs:
+  build-apk:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Build with Gradle
+        run: |
+          if [ -f "./gradlew" ]; then
+            chmod +x ./gradlew
+            if [ "${{ github.event.inputs.build_type }}" = "release" ]; then
+              ./gradlew assembleRelease
+            else
+              ./gradlew assembleDebug
+            fi
+          else
+            echo "Standard web/PWA build active. To compile native APK, ensure Android Gradle wrapper (gradlew) is in the repository root or android/ directory."
+          fi

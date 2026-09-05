@@ -26,7 +26,10 @@ export const InstallModal: React.FC<InstallModalProps> = ({ isOpen, onClose }) =
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<"pwa" | "apk">("pwa");
 
-  const installUrl = "https://ais-pre-t3qqao35cwooxp3xtwktt7-579924684305.europe-west1.run.app";
+  const [showChromeGuide, setShowChromeGuide] = useState(false);
+
+  const currentOrigin = typeof window !== "undefined" ? window.location.origin : "http://localhost:3000";
+  const installUrl = currentOrigin;
 
   useEffect(() => {
     const handleBeforeInstallPrompt = (e: Event) => {
@@ -56,7 +59,7 @@ export const InstallModal: React.FC<InstallModalProps> = ({ isOpen, onClose }) =
         setDeferredPrompt(null);
       }
     } else {
-      window.open(installUrl, "_blank");
+      setShowChromeGuide(true);
     }
   };
 
@@ -176,6 +179,18 @@ export const InstallModal: React.FC<InstallModalProps> = ({ isOpen, onClose }) =
                   <span>Install to Phone</span>
                 </button>
               </div>
+
+              {showChromeGuide && (
+                <div className="p-4 rounded-2xl bg-cyan-950/60 border border-cyan-400/50 flex items-start gap-3 animate-fadeIn">
+                  <Smartphone className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
+                  <div className="space-y-1 text-xs">
+                    <div className="font-bold text-cyan-200">How to add Wave Agent to your home screen:</div>
+                    <p className="text-cyan-100/90 leading-relaxed">
+                      Tap the <strong>three dots menu (⋮)</strong> in Chrome at the top right of your screen, then select <strong>&quot;Add to Home screen&quot;</strong> or <strong>&quot;Install app&quot;</strong>.
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {/* Mobile Install Instructions */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
